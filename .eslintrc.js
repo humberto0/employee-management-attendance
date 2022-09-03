@@ -35,6 +35,7 @@ module.exports = {
     "react-hooks/exhaustive-deps": "warn",
     "react-perf/jsx-no-new-array-as-prop": "off",
     "react-perf/jsx-no-new-object-as-prop":"off",
+    "react/no-children-prop": "off",
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
