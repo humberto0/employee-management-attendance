@@ -1,10 +1,5 @@
-import {
-  FieldError,
-  FieldErrorsImpl,
-  Merge,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineMail } from "react-icons/ai";
 import { useMutation } from "react-query";
 
 import {
@@ -14,6 +9,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
@@ -22,11 +18,11 @@ import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import * as yup from "yup";
 
-import { Input } from "../../components/Form/Input";
-import { Header } from "../../components/Header";
-import { Sidebar } from "../../components/Sidebar";
-import { api } from "../../services/api";
-import { queryClient } from "../../services/queryClient";
+import { Input } from "../components/Form/Input";
+import { Header } from "../components/Header";
+import { Sidebar } from "../components/Sidebar";
+import { api } from "../services/api";
+import { queryClient } from "../services/queryClient";
 
 type CreateUserFormData = {
   name: string;
@@ -115,6 +111,9 @@ export default function CreateUser() {
                 label="E-mail"
                 {...register("email")}
                 error={errors.email}
+                icon={
+                  <Icon as={AiOutlineMail} color="white" mt="2" fontSize="25" />
+                }
               />
             </SimpleGrid>
             <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
@@ -144,7 +143,7 @@ export default function CreateUser() {
               </Link>
               <Button
                 type="submit"
-                colorScheme="pink"
+                colorScheme="green"
                 isLoading={formState.isSubmitting}
               >
                 Salvar

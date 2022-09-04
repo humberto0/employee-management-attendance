@@ -26,6 +26,7 @@ export function Header() {
       mt="4"
       px="6"
       align="center"
+      gap="120"
     >
       {!isWideVersion && (
         <IconButton

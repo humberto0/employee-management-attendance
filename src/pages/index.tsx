@@ -1,9 +1,18 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BiUser } from "react-icons/bi";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RiLockLine } from "react-icons/ri";
 
-import { Flex, Button, Stack, Icon, Image, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  Stack,
+  Icon,
+  Text,
+  useColorModeValue,
+  useColorMode,
+} from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Logo } from "src/components/Header/Logo";
 import { NavLink } from "src/components/Sidebar/NavLink";
@@ -25,6 +34,8 @@ export default function SignIn() {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
+  const { toggleColorMode } = useColorMode();
+  const bg = useColorModeValue("light", "dark");
 
   const { errors }: any = formState;
 
@@ -38,11 +49,29 @@ export default function SignIn() {
       h="100vh"
       alignItems="center"
       justifyContent="center"
-      bgImage="url('images/Background.png')"
+      bgImage={
+        bg === "light"
+          ? "url('images/BackgroundLight.png')"
+          : "url('images/Background.png')"
+      }
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
+      position="relative"
     >
+      <Button
+        onClick={toggleColorMode}
+        position="absolute"
+        colorScheme="gray"
+        top="2"
+        right="2"
+      >
+        <Icon
+          as={bg === "light" ? FaMoon : FaSun}
+          color={bg === "light" ? "gray.800" : "gray.100"}
+          fontSize="25"
+        />
+      </Button>
       <Flex
         as="form"
         width="100%"
@@ -71,7 +100,14 @@ export default function SignIn() {
             type="email"
             {...register("email")}
             error={errors.email}
-            icon={<Icon as={BiUser} color="white" mt="2" fontSize="25" />}
+            icon={
+              <Icon
+                as={BiUser}
+                color={bg === "light" ? "gray.800" : "gray.100"}
+                mt="2"
+                fontSize="25"
+              />
+            }
           />
           <Input
             name="password"
@@ -79,7 +115,14 @@ export default function SignIn() {
             placeholder="Senha"
             {...register("password")}
             error={errors.password}
-            icon={<Icon as={RiLockLine} color="white" mt="2" fontSize="25" />}
+            icon={
+              <Icon
+                as={RiLockLine}
+                color={bg === "light" ? "gray.800" : "gray.100"}
+                mt="2"
+                fontSize="25"
+              />
+            }
           />
         </Stack>
         <Button
@@ -100,7 +143,7 @@ export default function SignIn() {
         <Button
           type="submit"
           mt="6"
-          bg="gray.900"
+          bg={bg === "light" ? "gray.300" : "gray.800"}
           colorScheme="gray"
           size="lg"
           isLoading={formState.isSubmitting}
@@ -112,7 +155,7 @@ export default function SignIn() {
           <Text fontSize="xs" textAlign="center">
             Não tem conta?
           </Text>
-          <NavLink href="/dashboard" ml="-3" fontSize="xs">
+          <NavLink href="/dashboard" ml="-3" fontSize="xs" colorScheme="gray">
             Registre-se
           </NavLink>
         </Flex>

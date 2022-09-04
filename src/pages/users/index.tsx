@@ -68,12 +68,12 @@ export default function UserList() {
               )}
             </Heading>
 
-            <NextLink href="/users/create" passHref>
+            <NextLink href="/create" passHref>
               <Button
                 as="a"
                 size="sm"
                 fontSize="sm"
-                colorScheme="pink"
+                colorScheme="green"
                 leftIcon={<Icon as={RiAddLine} fontSize="20" />}
               >
                 Criar novo
@@ -95,7 +95,7 @@ export default function UserList() {
                 <Thead>
                   <Tr>
                     <Th px={["4", "4", "6"]} color="gray.300" width="8">
-                      <Checkbox colorScheme="pink" />
+                      <Checkbox colorScheme="green" />
                     </Th>
                     <Th>Usuário</Th>
                     {isWideVersion && <Th>Data de cadastro</Th>}
@@ -106,7 +106,7 @@ export default function UserList() {
                   {data.users.map(user => (
                     <Tr key={user.id}>
                       <Td px={["4", "4", "6"]}>
-                        <Checkbox colorScheme="pink" />
+                        <Checkbox colorScheme="green" />
                       </Td>
                       <Td>
                         <Box>

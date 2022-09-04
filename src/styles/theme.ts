@@ -32,11 +32,6 @@ export const theme = extendTheme({
     body: "Roboto",
   },
   styles: {
-    global: {
-      body: {
-        bg: "gray.900",
-        color: "gray.50",
-      },
-    },
+    global: {},
   },
 });

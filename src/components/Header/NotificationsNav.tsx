@@ -1,8 +1,11 @@
+import { BsMoon } from "react-icons/bs";
+import { FaSun } from "react-icons/fa";
 import { RiNotificationLine, RiUserAddLine } from "react-icons/ri";
 
-import { HStack, Icon } from "@chakra-ui/react";
+import { Button, HStack, Icon, useColorMode } from "@chakra-ui/react";
 
 export function NotificationsNav() {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <HStack
       spacing={["6", "8"]}
@@ -13,8 +16,23 @@ export function NotificationsNav() {
       borderRightWidth={1}
       borderColor="gray.700"
     >
-      <Icon as={RiNotificationLine} fontSize="20" />
-      <Icon as={RiUserAddLine} fontSize="20" />
+      <Button onClick={toggleColorMode} bg="transparent">
+        <Icon
+          as={colorMode === "light" ? BsMoon : FaSun}
+          color={colorMode === "light" ? "gray.800" : "gray.100"}
+          fontSize="25"
+        />
+      </Button>
+      <Icon
+        as={RiNotificationLine}
+        fontSize="25"
+        color={colorMode === "light" ? "gray.800" : "gray.100"}
+      />
+      <Icon
+        as={RiUserAddLine}
+        fontSize="25"
+        color={colorMode === "light" ? "gray.800" : "gray.100"}
+      />
     </HStack>
   );
 }

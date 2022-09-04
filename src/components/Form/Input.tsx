@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputProps as ChakraInputProps,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 interface InputProps extends ChakraInputProps {
@@ -25,6 +26,7 @@ export function Input({
   icon,
   ...rest
 }: InputProps) {
+  const bg = useColorModeValue("light", "dark");
   return (
     <FormControl isInvalid={!!error}>
       {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
@@ -38,9 +40,9 @@ export function Input({
           focusBorderColor="green.500"
           bg="transparent"
           variant="filled"
-          borderColor="white"
+          borderColor={bg ? "gray.200" : "gray.900"}
           _hover={{
-            bgColor: "gray.700",
+            bgColor: bg === "light" ? "gray.100" : "gray.700",
           }}
           size="lg"
           {...rest}

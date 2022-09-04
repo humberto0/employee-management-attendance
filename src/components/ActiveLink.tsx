@@ -1,5 +1,6 @@
 import React, { cloneElement, ReactElement } from "react";
 
+import { useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import Link, { LinkProps } from "next/link";
 
@@ -14,7 +15,7 @@ export function ActiveLink({
   ...rest
 }: ActiveLinkProps) {
   const { asPath } = useRouter();
-
+  const bg = useColorModeValue("light", "dark");
   let isActive = false;
 
   if (shouldMatchExactHref && (asPath === rest.href || asPath === rest.as)) {
@@ -31,7 +32,7 @@ export function ActiveLink({
   return (
     <Link {...rest}>
       {cloneElement(children, {
-        color: isActive ? "green.400" : "gray.50",
+        color: isActive ? "green.400" : bg === "light" ? "gray.900" : "gray.50",
       })}
     </Link>
   );

@@ -9,17 +9,17 @@ export function Profile({ showProfileData }: ProfileProps) {
     <Flex align="center">
       {showProfileData && (
         <Box mr="4" textAlign="right">
-          <Text>Joseph Oliveira</Text>
+          <Text>Humberto Junior</Text>
           <Text color="gray.300" fontSize="small">
-            oi@josepholiveira.dev
+            humberto.dev@gmail.com
           </Text>
         </Box>
       )}
 
       <Avatar
         size="md"
-        name="Joseph Oliveira"
-        src="https://github.com/josepholiveira.png"
+        name="Humberto Dev"
+        src="https://avatars.githubusercontent.com/u/15384670?s=400&u=d2237d01db757ca117df3179b0393960ebe91cd8&v=4"
       />
     </Flex>
   );
