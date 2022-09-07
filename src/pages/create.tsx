@@ -16,11 +16,11 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
 import * as yup from "yup";
 
 import { Input } from "../components/Form/Input";
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
 import { api } from "../services/api";
 import { queryClient } from "../services/queryClient";
 
@@ -45,7 +45,7 @@ const createUserFormSchema = yup.object().shape({
 
 export default function CreateUser() {
   const router = useRouter();
-
+  const { isOpen } = useSidebarDrawer();
   const createUser = useMutation(
     async (user: CreateUserFormData) => {
       const response = await api.post("/users", {
@@ -77,17 +77,16 @@ export default function CreateUser() {
   };
 
   return (
-    <Box>
+    <Box h="100%" minH="100vh">
       <Header />
-      <Flex w="100%" maxW={1480} my="6" mx="auto" px="6">
-        <Sidebar />
-
+      <Flex w="100%" maxW={1480} pr="6" pl={isOpen ? "60" : "55"}>
         <Box
           as="form"
           flex="1"
           borderRadius={8}
           bg="gray.800"
-          p={["6", "8"]}
+          py={["6", "8"]}
+          px="2"
           onSubmit={handleSubmit(handleCreateUser)}
         >
           <Heading size="lg" fontWeight="normal">

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 
 import { PaginationItem } from "./PaginationItem";
 

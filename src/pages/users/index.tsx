@@ -19,25 +19,27 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
+import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
 
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
-import { Sidebar } from "../../components/Sidebar";
 import { api } from "../../services/api";
-import { getUsers, useUsers } from "../../services/hooks/useUsers";
+import { useUsers } from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
 
 export default function UserList() {
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching, error }: any = useUsers(page);
-
+  const bg = useColorModeValue("light", "dark");
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
+  const { isOpen } = useSidebarDrawer();
 
   const handlePrefetchUser = async (userId: string) => {
     await queryClient.prefetchQuery(
@@ -54,12 +56,15 @@ export default function UserList() {
   };
 
   return (
-    <Box>
+    <Box h="100%" minH="100vh">
       <Header />
-      <Flex w="100%" maxW={1480} my="6" mx="auto" px="6">
-        <Sidebar />
-
-        <Box flex="1" borderRadius={8} bg="gray.800" p="8">
+      <Flex w="100%" maxW={1480} pr="6" pl={isOpen ? "60" : "55"}>
+        <Box
+          flex="1"
+          borderRadius={8}
+          bg={bg === "light" ? "gray.100" : "gray.900"}
+          p="8"
+        >
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
@@ -116,7 +121,10 @@ export default function UserList() {
                           >
                             <Text fontWeight="bold">{user.name}</Text>
                           </Link>
-                          <Text fontSize="sm" color="gray.300">
+                          <Text
+                            fontSize="sm"
+                            color={bg === "light" ? "gray.900" : "gray.100"}
+                          >
                             {user.email}
                           </Text>
                         </Box>

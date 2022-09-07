@@ -36,6 +36,7 @@ module.exports = {
     "react-perf/jsx-no-new-array-as-prop": "off",
     "react-perf/jsx-no-new-object-as-prop":"off",
     "react/no-children-prop": "off",
+    "indent":"off",
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
@@ -56,6 +57,6 @@ module.exports = {
         alphabetize: { order: "asc", ignoreCase: true },
       },
     ],
-    indent: ["error", 2],
+ 
   },
 };

@@ -4,12 +4,13 @@ import {
   SimpleGrid,
   Text,
   theme,
+  useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
 
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -63,24 +64,30 @@ const options: any = {
 const series = [{ name: "series1", data: [31, 120, 10, 28, 61, 18, 109] }];
 
 export default function Dashboard() {
+  const { isOpen } = useSidebarDrawer();
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
   const bg = useColorModeValue("light", "dark");
   return (
-    <Flex direction="column" h="100vh">
+    <Flex direction="column" h="100%" minH="100vh">
       <Header />
-      <Flex w="100%" maxW={1480} my="6" mx="auto" px="6">
-        <Sidebar />
-
-        <SimpleGrid
-          flex="1"
-          gap="4"
-          minChildWidth="320px"
-          alignItems="flex-start"
-        >
+      <Flex
+        w="100%"
+        pl={isOpen ? "60" : "55"}
+        pr="6"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
+        <SimpleGrid flex="1" gap="4" minChildWidth="320px" alignItems="center">
           <Box
             p="10"
             bg={bg === "light" ? "gray.100" : "gray.900"}
             borderRadius={8}
             maxW="600"
+            minW="350"
+            justifyContent="center"
           >
             <Text fontSize="lg" mb="4">
               Inscritos
@@ -90,7 +97,7 @@ export default function Dashboard() {
               series={series}
               type="area"
               height={160}
-              width={450}
+              width={isWideVersion ? 450 : 300}
             />
           </Box>
           <Box
@@ -98,6 +105,7 @@ export default function Dashboard() {
             bg={bg === "light" ? "gray.100" : "gray.900"}
             borderRadius={8}
             maxW="600"
+            minW="350"
           >
             <Text fontSize="lg" mb="4">
               Taxa de abertura
@@ -107,7 +115,7 @@ export default function Dashboard() {
               series={series}
               type="area"
               height={160}
-              width={450}
+              width={isWideVersion ? 450 : 300}
             />
           </Box>
         </SimpleGrid>
