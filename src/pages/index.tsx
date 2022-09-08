@@ -27,7 +27,7 @@ type SignInFormData = {
 
 const signInFormSchema = yup.object().shape({
   email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-  password: yup.string().required("Senha obrigatória"),
+  password: yup.string().required("Senha obrigatória").min(6, "Min 6 digits"),
 });
 
 export default function SignIn() {
@@ -40,6 +40,7 @@ export default function SignIn() {
   const { errors }: any = formState;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async data => {
+    event.preventDefault();
     console.log(data);
   };
 

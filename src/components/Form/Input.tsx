@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { forwardRef, ForwardRefRenderFunction, ReactNode } from "react";
 import { FieldError } from "react-hook-form";
 
 import {
@@ -18,18 +18,18 @@ interface InputProps extends ChakraInputProps {
   error?: FieldError;
   icon?: ReactNode;
 }
-
-export function Input({
-  name,
-  label,
-  error = null,
-  icon,
-  ...rest
-}: InputProps) {
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { name, label, error = null, icon, ...rest },
+  ref,
+) => {
   const bg = useColorModeValue("light", "dark");
   return (
     <FormControl isInvalid={!!error}>
-      {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+      {label && (
+        <FormLabel htmlFor={name} id={name}>
+          {label}
+        </FormLabel>
+      )}
       <InputGroup>
         {icon && (
           <InputLeftElement pointerEvents="visibleStroke" children={icon} />
@@ -40,6 +40,7 @@ export function Input({
           focusBorderColor="green.500"
           bg="transparent"
           variant="filled"
+          ref={ref}
           borderColor={bg ? "gray.200" : "gray.900"}
           _hover={{
             bgColor: bg === "light" ? "gray.100" : "gray.700",
@@ -52,4 +53,5 @@ export function Input({
       {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </FormControl>
   );
-}
+};
+export const Input = forwardRef(InputBase);
