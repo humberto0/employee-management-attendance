@@ -40,7 +40,6 @@ export default function SignIn() {
   const { errors }: any = formState;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async data => {
-    event.preventDefault();
     console.log(data);
   };
 
