@@ -14,8 +14,12 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 import { Logo } from "src/components/Header/Logo";
 import { NavLink } from "src/components/Sidebar/NavLink";
+import { useAuthContext } from "src/contexts/AuthContext";
+import { withSSRGuest } from "src/utils/withSSRGuest";
 import * as yup from "yup";
 
 import { Input } from "../components/Form/Input";
@@ -27,20 +31,28 @@ type SignInFormData = {
 
 const signInFormSchema = yup.object().shape({
   email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-  password: yup.string().required("Senha obrigatória").min(6, "Min 6 digits"),
+  password: yup
+    .string()
+    .required("Senha obrigatória")
+    .min(6, "Min 6 digits")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "A senha deve conter 8 caracteres , Um carácter, Um minusculo, Um Numero e um carácter especial",
+    ),
 });
 
 export default function SignIn() {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
+  const { signIn } = useAuthContext();
   const { toggleColorMode } = useColorMode();
   const bg = useColorModeValue("light", "dark");
 
   const { errors }: any = formState;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async data => {
-    console.log(data);
+    signIn(data);
   };
 
   return (
@@ -163,3 +175,8 @@ export default function SignIn() {
     </Flex>
   );
 }
+export const getServerSideProps = withSSRGuest(async ctx => {
+  return {
+    props: {},
+  };
+});

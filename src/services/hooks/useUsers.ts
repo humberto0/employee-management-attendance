@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from "react-query";
 
-import { api } from "../api";
+import { apiAuth } from "../apiAuthClient";
 
 type User = {
   id: string;
@@ -15,15 +15,11 @@ type GetUsersReponse = {
 };
 
 export async function getUsers(page: number): Promise<GetUsersReponse> {
-  const { data, headers } = await api.get("/users", {
-    params: {
-      page,
-    },
+  const { data, headers } = await apiAuth.get("/me", {
+    params: {},
   });
 
   const totalCount = Number(headers["x-total-count"]);
-
-  console.log(data.users);
 
   const users = data.users.map(user => {
     return {

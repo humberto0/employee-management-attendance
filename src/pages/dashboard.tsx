@@ -8,7 +8,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import { destroyCookie } from "nookies";
 import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
+import { setupApiClient } from "src/services/apiAuth";
+import { withSSRAuth } from "src/utils/withSSRAuth";
 
 import { Header } from "../components/Header";
 
@@ -123,3 +126,11 @@ export default function Dashboard() {
     </Flex>
   );
 }
+export const getServerSideProps = withSSRAuth(async ctx => {
+  const apiClient = setupApiClient(ctx);
+  const response = await apiClient.get("/me");
+
+  return {
+    props: {},
+  };
+});

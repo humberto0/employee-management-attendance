@@ -10,6 +10,7 @@ import {
   Box,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useAuthContext } from "src/contexts/AuthContext";
 
 import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
 import { SidebarNav } from "../Sidebar";
@@ -19,6 +20,7 @@ import { Profile } from "./Profile";
 import { SearchBox } from "./SearchBox";
 
 export function Header() {
+  const { user } = useAuthContext();
   const { isOpen, onClose, onOpen } = useSidebarDrawer();
   const animationKeyframes = keyframes`
   0% { transform: scale(1); border-radius: 50%; }
@@ -106,7 +108,7 @@ export function Header() {
         <Flex align="center" ml="auto">
           <NotificationsNav />
 
-          <Profile showProfileData={isWideVersion} />
+          <Profile showProfileData={isWideVersion} dateUser={user} />
         </Flex>
       </Flex>
     </Flex>

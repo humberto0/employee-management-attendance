@@ -24,10 +24,11 @@ import {
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
+import { apiAuth } from "src/services/apiAuthClient";
+import { withSSRAuth } from "src/utils/withSSRAuth";
 
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
-import { api } from "../../services/api";
 import { useUsers } from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
 
@@ -45,7 +46,7 @@ export default function UserList() {
     await queryClient.prefetchQuery(
       ["user", userId],
       async () => {
-        const response = await api.get(`/users/${userId}`);
+        const response = await apiAuth.get(`/me/${userId}`);
 
         return response.data;
       },
@@ -157,3 +158,8 @@ export default function UserList() {
     </Box>
   );
 }
+export const getServerSideProps = withSSRAuth(async ctx => {
+  return {
+    props: {},
+  };
+});

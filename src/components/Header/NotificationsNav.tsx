@@ -9,9 +9,11 @@ import {
 } from "react-icons/ri";
 
 import { Flex, HStack, Icon, IconButton, useColorMode } from "@chakra-ui/react";
+import { useAuthContext } from "src/contexts/AuthContext";
 
 export function NotificationsNav() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { signOut } = useAuthContext();
 
   const notificationsTest = useCallback(() => {
     console.log("terminar");

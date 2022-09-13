@@ -7,12 +7,15 @@ import {
 
 import { Stack } from "@chakra-ui/react";
 import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
+import { useCan } from "src/services/hooks/useCan";
 
+import { Can } from "../Can";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 
 export function SidebarNav() {
   const { isOpen } = useSidebarDrawer();
+
   return (
     <Stack
       spacing={isOpen ? "12" : "4"}
@@ -26,15 +29,16 @@ export function SidebarNav() {
           {isOpen && "Usuários"}
         </NavLink>
       </NavSection>
-
-      <NavSection title="AUTOMAÇÃO">
-        <NavLink icon={RiInputMethodLine} href="/create">
-          {isOpen && "Formulários"}
-        </NavLink>
-        <NavLink icon={RiGitMergeLine} href="/automation">
-          {isOpen && "Automação"}
-        </NavLink>
-      </NavSection>
+      <Can permissions={["administrator", "editor"]}>
+        <NavSection title="AUTOMAÇÃO">
+          <NavLink icon={RiInputMethodLine} href="/create">
+            {isOpen && "Formulários"}
+          </NavLink>
+          <NavLink icon={RiGitMergeLine} href="/automation">
+            {isOpen && "Automação"}
+          </NavLink>
+        </NavSection>
+      </Can>
     </Stack>
   );
 }

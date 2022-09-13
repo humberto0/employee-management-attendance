@@ -17,11 +17,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { useSidebarDrawer } from "src/contexts/SidebarDrawerContext";
+import { setupApiClient } from "src/services/apiAuth";
+import { apiAuth } from "src/services/apiAuthClient";
+import { withSSRAuth } from "src/utils/withSSRAuth";
 import * as yup from "yup";
 
 import { Input } from "../components/Form/Input";
 import { Header } from "../components/Header";
-import { api } from "../services/api";
 import { queryClient } from "../services/queryClient";
 
 type CreateUserFormData = {
@@ -48,7 +50,7 @@ export default function CreateUser() {
   const { isOpen } = useSidebarDrawer();
   const createUser = useMutation(
     async (user: CreateUserFormData) => {
-      const response = await api.post("/users", {
+      const response = await apiAuth.post("/users", {
         user: {
           ...user,
           created_at: new Date(),
@@ -154,3 +156,17 @@ export default function CreateUser() {
     </Box>
   );
 }
+export const getServerSideProps = withSSRAuth(
+  async ctx => {
+    const apiClient = setupApiClient(ctx);
+    const response = await apiClient.get("/me");
+
+    return {
+      props: {},
+    };
+  },
+  {
+    permissions: ["metrics.list"],
+    roles: ["administrator"],
+  },
+);
