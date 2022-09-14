@@ -5,7 +5,7 @@ import { SidebarDrawerProvider } from "./SidebarDrawerContext";
 const AppProvider = ({ children }: any) => {
   return (
     <SidebarDrawerProvider>
-      <AuthProvider>{children}</AuthProvider>;
+      <AuthProvider>{children}</AuthProvider>
     </SidebarDrawerProvider>
   );
 };

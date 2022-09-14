@@ -28,7 +28,7 @@ export function SidebarNav() {
           {isOpen && "Usuários"}
         </NavLink>
       </NavSection>
-      <Can permissions={["administrator"]}>
+      <Can permissions={["users.create"]}>
         <NavSection title="AUTOMAÇÃO">
           <NavLink icon={RiInputMethodLine} href="/create">
             {isOpen && "Formulários"}
