@@ -18,6 +18,6 @@ export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
         },
       };
     } //redirecionar o usuário caso ele ja tenha um token
-    return await fn(ctx); //não retorna nada
+    return await fn(ctx);
   };
 }

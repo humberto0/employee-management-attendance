@@ -15,13 +15,13 @@ type GetUsersReponse = {
 };
 
 export async function getUsers(page: number): Promise<GetUsersReponse> {
-  const { data, headers } = await apiAuth.get("/me", {
+  const { data } = await apiAuth.get("/cliente", {
     params: {},
   });
 
-  const totalCount = Number(headers["x-total-count"]);
+  const totalCount = Number(data.totalItem);
 
-  const users = data.users.map(user => {
+  const users = data.customers.map(user => {
     return {
       id: user.id,
       name: user.name,

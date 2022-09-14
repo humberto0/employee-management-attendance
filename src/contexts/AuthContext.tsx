@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 
+import { useToast } from "@chakra-ui/react";
 import Router from "next/router";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { apiAuth } from "src/services/apiAuthClient";
@@ -38,29 +39,29 @@ export const signOut = () => {
   destroyCookie(undefined, "dev.token");
   destroyCookie(undefined, "dev.refreshToken");
 
-  authChannel.postMessage("signOut"); //deslogar das abas
+  authChannel?.postMessage("signOut"); //deslogar das abas
 
   Router.push("/");
 };
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user; //se não tiver nada é pq não ta autenticado
+  const toast = useToast();
+  // useEffect(() => {
+  //   authChannel = new BroadcastChannel("auth");
 
-  useEffect(() => {
-    authChannel = new BroadcastChannel("auth");
+  //   authChannel.onmessage = message => {
+  //     switch (message.data) {
+  //       case "signOut":
+  //         signOut();
+  //         authChannel.close();
+  //         break;
 
-    authChannel.onmessage = message => {
-      switch (message.data) {
-        case "signOut":
-          signOut();
-          authChannel.close();
-          break;
-
-        default:
-          break;
-      }
-    };
-  }, []); // deslogar de todas abas
+  //       default:
+  //         break;
+  //     }
+  //   };
+  // }, []); // deslogar de todas abas
 
   useEffect(() => {
     const { "dev.token": token } = parseCookies();
@@ -107,7 +108,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       Router.push("/dashboard");
     } catch (err) {
-      console.log(err);
+      toast({
+        title: "Falha ao Efetuar o login.",
+        description: "E-mail ou senha inválidos",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   }
   return (

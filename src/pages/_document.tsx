@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
             rel="stylesheet"
-          ></link>
+          />
           <link rel="shortcut icon" href="favicon.png" type="image/png" />
         </Head>
         <body>

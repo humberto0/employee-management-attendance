@@ -46,7 +46,7 @@ export default function UserList() {
     await queryClient.prefetchQuery(
       ["user", userId],
       async () => {
-        const response = await apiAuth.get(`/me/${userId}`);
+        const response = await apiAuth.get(`/cliente/${userId}`);
 
         return response.data;
       },

@@ -14,8 +14,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
 import { Logo } from "src/components/Header/Logo";
 import { NavLink } from "src/components/Sidebar/NavLink";
 import { useAuthContext } from "src/contexts/AuthContext";
@@ -69,7 +67,6 @@ export default function SignIn() {
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
-      position="relative"
     >
       <Button
         onClick={toggleColorMode}

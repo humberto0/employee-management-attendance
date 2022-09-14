@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { BsMoonStarsFill, BsMoonStars } from "react-icons/bs";
 import { FaSun, FaRegSun } from "react-icons/fa";
+import { IoLogOutOutline, IoLogOutSharp } from "react-icons/io5";
 import {
   RiNotificationLine,
   RiUserAddLine,
@@ -29,7 +30,33 @@ export function NotificationsNav() {
       borderColor="gray.700"
     >
       <IconButton
-        aria-label="Open navigation"
+        aria-label="notifications"
+        icon={
+          <Flex position="relative" alignItems="center" justifyContent="center">
+            <Icon
+              as={IoLogOutSharp}
+              position="absolute"
+              zIndex="1"
+              fontSize="23"
+            />
+            <Icon
+              as={IoLogOutOutline}
+              color="transparent"
+              position="absolute"
+              zIndex="2"
+              _hover={{
+                color: `${colorMode === "light" ? "black" : "white"}`,
+              }}
+            />
+          </Flex>
+        }
+        color={colorMode === "light" ? "gray.800" : "gray.100"}
+        fontSize="25"
+        variant="unstyled"
+        onClick={signOut}
+      />
+      <IconButton
+        aria-label="Tema"
         icon={
           <Flex position="relative" alignItems="center" justifyContent="center">
             <Icon
@@ -55,7 +82,7 @@ export function NotificationsNav() {
         onClick={toggleColorMode}
       />
       <IconButton
-        aria-label="Open navigation"
+        aria-label="notifications"
         icon={
           <Flex position="relative" alignItems="center" justifyContent="center">
             <Icon
@@ -82,7 +109,7 @@ export function NotificationsNav() {
       />
 
       <IconButton
-        aria-label="Open navigation"
+        aria-label="Add user"
         icon={
           <Flex position="relative" alignItems="center" justifyContent="center">
             <Icon
