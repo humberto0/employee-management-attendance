@@ -26,8 +26,8 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 type AuthContextData = {
-  signIn(credencials: SignInCredentials): Promise<void>; //ele recebe as credenciais e não retorna nada(void)
-  signOut(): void;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => void;
   user: User; //ele retorna os dados do usuário para (email, name, roles e permissions)
   isAuthenticated: boolean; // ele também retorna se o usuário esta autenticado ou não
 };
@@ -35,14 +35,14 @@ const AuthContext = createContext({} as AuthContextData);
 
 let authChannel: BroadcastChannel;
 
-export const signOut = () => {
+export function signOut() {
   destroyCookie(undefined, "dev.token");
   destroyCookie(undefined, "dev.refreshToken");
 
-  authChannel?.postMessage("signOut"); //deslogar das abas
+  // authChannel.postMessage("signOut");
 
   Router.push("/");
-};
+}
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user; //se não tiver nada é pq não ta autenticado
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   //         break;
   //     }
   //   };
-  // }, []); // deslogar de todas abas
+  // }, []);
 
   useEffect(() => {
     const { "dev.token": token } = parseCookies();

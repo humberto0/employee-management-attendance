@@ -18,55 +18,58 @@ import { Header } from "../components/Header";
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
+interface ClientProps {
+  dataClient: {
+    id: any;
+    name: string;
+    email: string;
+    phone: string;
+    price: number;
+    created_at: Date;
+  }[];
+}
 
-const options: any = {
-  chart: {
-    toolbar: {
+export default function Dashboard({ dataClient }: ClientProps) {
+  const options: any = {
+    chart: {
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+      foreColor: theme.colors.gray[500],
+    },
+    grid: {
       show: false,
     },
-    zoom: {
+    tooltip: {
       enabled: false,
     },
-    foreColor: theme.colors.gray[500],
-  },
-  grid: {
-    show: false,
-  },
-  tooltip: {
-    enabled: false,
-  },
-  xaxis: {
-    type: "datetime",
-    axisBorder: {
-      color: theme.colors.gray[600],
+    xaxis: {
+      type: "datetime",
+      axisBorder: {
+        color: theme.colors.gray[600],
+      },
+      axisTicks: {
+        color: theme.colors.gray[600],
+      },
+      categories: dataClient.map(data => data.created_at),
     },
-    axisTicks: {
-      color: theme.colors.gray[600],
+    fill: {
+      opacity: 0.3,
+      type: "gradient",
+      gradient: {
+        shade: "dark",
+        opacityFrom: 0.7,
+        opacityTo: 0.3,
+      },
     },
-    categories: [
-      "2021,03-18T00:00:00.000Z",
-      "2021,03-19T00:00:00.000Z",
-      "2021,03-20T00:00:00.000Z",
-      "2021,03-21T00:00:00.000Z",
-      "2021,03-22T00:00:00.000Z",
-      "2021,03-23T00:00:00.000Z",
-      "2021,03-24T00:00:00.000Z",
-    ],
-  },
-  fill: {
-    opacity: 0.3,
-    type: "gradient",
-    gradient: {
-      shade: "dark",
-      opacityFrom: 0.7,
-      opacityTo: 0.3,
-    },
-  },
-};
+  };
 
-const series = [{ name: "series1", data: [31, 120, 10, 28, 61, 18, 109] }];
-
-export default function Dashboard() {
+  const series = [
+    { name: "series1", data: dataClient.map(item => item.price) },
+  ];
   const { isOpen } = useSidebarDrawer();
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -128,9 +131,9 @@ export default function Dashboard() {
 }
 export const getServerSideProps = withSSRAuth(async ctx => {
   const apiClient = setupApiClient(ctx);
-  const response = await apiClient.get("/me");
-
+  const response = await apiClient.get("/cliente");
+  const dataClient = response.data.customers;
   return {
-    props: {},
+    props: { dataClient },
   };
 });

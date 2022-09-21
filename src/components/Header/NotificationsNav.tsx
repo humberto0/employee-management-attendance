@@ -34,13 +34,13 @@ export function NotificationsNav() {
         icon={
           <Flex position="relative" alignItems="center" justifyContent="center">
             <Icon
-              as={IoLogOutSharp}
+              as={IoLogOutOutline}
               position="absolute"
               zIndex="1"
               fontSize="23"
             />
             <Icon
-              as={IoLogOutOutline}
+              as={IoLogOutSharp}
               color="transparent"
               position="absolute"
               zIndex="2"

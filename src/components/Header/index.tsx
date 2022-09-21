@@ -24,12 +24,12 @@ export function Header() {
   const { isOpen, onClose, onOpen } = useSidebarDrawer();
   const animationKeyframes = keyframes`
   0% { transform: scale(1); border-radius: 50%; }
-  30% { transform: translateX(10px); border-radius: 20%; }
+  30% { transform: translateX(5px); border-radius: 20%; }
   70% { transform: scale(1) }
 `;
   const animationKeyframesClose = keyframes`
   0% { transform: scale(1); border-radius: 50%; }
-  30% { transform: translateX(-10px); border-radius: 20%; }
+  30% { transform: translateX(-5px); border-radius: 20%; }
   70% { transform: scale(1) }
   `;
   const animationShow = `${animationKeyframes} 1s ease-in-out`;

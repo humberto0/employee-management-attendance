@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AiOutlineMail } from "react-icons/ai";
+import { AiOutlineMail, AiFillPayCircle } from "react-icons/ai";
+import { BiUser, BiPhone } from "react-icons/bi";
 import { useMutation } from "react-query";
 
 import {
@@ -11,6 +12,8 @@ import {
   HStack,
   Icon,
   SimpleGrid,
+  useColorModeValue,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -36,17 +39,17 @@ type CreateUserFormData = {
 const createUserFormSchema = yup.object().shape({
   name: yup.string().required("Nome obrigatório"),
   email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-  password: yup
-    .string()
-    .required("Senha obrigatória")
-    .min(6, "No mínimo 6 caracteres"),
-  password_confirmation: yup
-    .string()
-    .oneOf([null, yup.ref("password")], "As senhas precisam ser iguais"),
+  price: yup.number().required("Valor do plano é obrigatório"),
+  phone: yup
+    .number()
+    .required("Telefone é obrigatório")
+    .min(10, "O telefone deve ter no mínimo 10 dígitos"),
 });
 
 export default function CreateUser() {
+  const toast = useToast();
   const router = useRouter();
+  const bg = useColorModeValue("light", "dark");
   const { isOpen } = useSidebarDrawer();
   const createUser = useMutation(
     async (user: CreateUserFormData) => {
@@ -73,8 +76,17 @@ export default function CreateUser() {
   const { errors }: any = formState;
 
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async values => {
-    await createUser.mutateAsync(values);
-
+    try {
+      await apiAuth.post("/cliente", values);
+    } catch (error) {
+      toast({
+        title: "Falha ao efetuar cadastro",
+        description: "Ocorreu um erro ao tentar efetuar cadastro.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
     router.push("/users");
   };
 
@@ -86,7 +98,7 @@ export default function CreateUser() {
           as="form"
           flex="1"
           borderRadius={8}
-          bg="gray.800"
+          bg={bg === "light" ? "gray.100" : "gray.900"}
           py={["6", "8"]}
           px="2"
           onSubmit={handleSubmit(handleCreateUser)}
@@ -104,6 +116,14 @@ export default function CreateUser() {
                 label="Nome completo"
                 {...register("name")}
                 error={errors.name}
+                icon={
+                  <Icon
+                    as={BiUser}
+                    color={bg === "light" ? "gray.800" : "gray.100"}
+                    mt="2"
+                    fontSize="25"
+                  />
+                }
               />
 
               <Input
@@ -113,24 +133,45 @@ export default function CreateUser() {
                 {...register("email")}
                 error={errors.email}
                 icon={
-                  <Icon as={AiOutlineMail} color="white" mt="2" fontSize="25" />
+                  <Icon
+                    as={AiOutlineMail}
+                    color={bg === "light" ? "gray.800" : "gray.100"}
+                    mt="2"
+                    fontSize="25"
+                  />
                 }
               />
             </SimpleGrid>
             <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
               <Input
-                name="password"
-                type="password"
-                label="Senha"
-                {...register("password")}
-                error={errors.password}
+                name="phone"
+                type="phone"
+                label="Telefone"
+                {...register("phone")}
+                icon={
+                  <Icon
+                    as={BiPhone}
+                    color={bg === "light" ? "gray.800" : "gray.100"}
+                    mt="2"
+                    fontSize="25"
+                  />
+                }
+                error={errors.phone}
               />
               <Input
-                name="password_confirmation"
-                type="password"
-                label="Confirmação da senha"
-                {...register("password_confirmation")}
-                error={errors.password_confirmation}
+                name="price"
+                type="text"
+                label="Preço do plano"
+                {...register("price")}
+                icon={
+                  <Icon
+                    as={AiFillPayCircle}
+                    color={bg === "light" ? "gray.800" : "gray.100"}
+                    mt="2"
+                    fontSize="25"
+                  />
+                }
+                error={errors.price}
               />
             </SimpleGrid>
           </VStack>

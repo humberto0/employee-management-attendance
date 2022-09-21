@@ -16,7 +16,9 @@ type GetUsersReponse = {
 
 export async function getUsers(page: number): Promise<GetUsersReponse> {
   const { data } = await apiAuth.get("/cliente", {
-    params: {},
+    params: {
+      page,
+    },
   });
 
   const totalCount = Number(data.totalItem);
