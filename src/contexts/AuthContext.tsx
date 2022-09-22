@@ -39,7 +39,7 @@ export function signOut() {
   destroyCookie(undefined, "dev.token");
   destroyCookie(undefined, "dev.refreshToken");
 
-  // authChannel.postMessage("signOut");
+  authChannel.postMessage("signOut");
 
   Router.push("/");
 }
@@ -47,21 +47,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user; //se não tiver nada é pq não ta autenticado
   const toast = useToast();
-  // useEffect(() => {
-  //   authChannel = new BroadcastChannel("auth");
+  useEffect(() => {
+    authChannel = new BroadcastChannel("auth");
 
-  //   authChannel.onmessage = message => {
-  //     switch (message.data) {
-  //       case "signOut":
-  //         signOut();
-  //         authChannel.close();
-  //         break;
+    authChannel.onmessage = message => {
+      switch (message.data) {
+        case "signOut":
+          signOut();
+          authChannel.close();
+          break;
 
-  //       default:
-  //         break;
-  //     }
-  //   };
-  // }, []);
+        default:
+          break;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const { "dev.token": token } = parseCookies();

@@ -144,7 +144,7 @@ export default function SignIn() {
           isLoading={formState.isSubmitting}
           _hover={{
             border: "none",
-            bg: "green.100",
+            bg: "green.50",
           }}
         >
           Login
@@ -164,7 +164,7 @@ export default function SignIn() {
           <Text fontSize="xs" textAlign="center">
             Não tem conta?
           </Text>
-          <NavLink href="/dashboard" ml="-3" fontSize="xs" colorScheme="gray">
+          <NavLink href="/dashboard" fontSize="xs" colorScheme="gray">
             Registre-se
           </NavLink>
         </Flex>
