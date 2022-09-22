@@ -53,8 +53,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     authChannel.onmessage = message => {
       switch (message.data) {
         case "signOut":
-          signOut();
-          authChannel.close();
+          Router.push("/");
           break;
 
         default:
