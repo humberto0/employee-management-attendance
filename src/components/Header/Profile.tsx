@@ -11,7 +11,6 @@ interface ProfileProps {
 }
 
 export function Profile({ showProfileData, dateUser }: ProfileProps) {
-  console.log(dateUser);
   return (
     <Flex align="center">
       {showProfileData && (

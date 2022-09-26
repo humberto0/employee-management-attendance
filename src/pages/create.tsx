@@ -27,7 +27,6 @@ import * as yup from "yup";
 
 import { Input } from "../components/Form/Input";
 import { Header } from "../components/Header";
-import { queryClient } from "../services/queryClient";
 
 type CreateUserFormData = {
   name: string;
@@ -51,23 +50,6 @@ export default function CreateUser() {
   const router = useRouter();
   const bg = useColorModeValue("light", "dark");
   const { isOpen } = useSidebarDrawer();
-  const createUser = useMutation(
-    async (user: CreateUserFormData) => {
-      const response = await apiAuth.post("/users", {
-        user: {
-          ...user,
-          created_at: new Date(),
-        },
-      });
-
-      return response.data.user;
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("users");
-      },
-    },
-  );
 
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema),
@@ -100,7 +82,7 @@ export default function CreateUser() {
           borderRadius={8}
           bg={bg === "light" ? "gray.100" : "gray.900"}
           py={["6", "8"]}
-          px="2"
+          px="6"
           onSubmit={handleSubmit(handleCreateUser)}
         >
           <Heading size="lg" fontWeight="normal">
