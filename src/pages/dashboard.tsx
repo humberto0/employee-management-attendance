@@ -26,6 +26,9 @@ interface ClientProps {
     phone: string;
     price: number;
     created_at: Date;
+    quantity: number;
+    priceTotal: number;
+    companyShares: string[];
   }[];
 }
 
@@ -43,18 +46,21 @@ export default function Dashboard({ dataClient }: ClientProps) {
     grid: {
       show: false,
     },
+    dataLabels: {
+      enabled: false,
+    },
     tooltip: {
       enabled: false,
     },
     xaxis: {
-      type: "datetime",
+      type: "text",
       axisBorder: {
         color: theme.colors.gray[600],
       },
       axisTicks: {
         color: theme.colors.gray[600],
       },
-      categories: dataClient.map(data => data.created_at),
+      categories: dataClient.map(data => data.companyShares[0]),
     },
     fill: {
       opacity: 0.3,
@@ -68,7 +74,10 @@ export default function Dashboard({ dataClient }: ClientProps) {
   };
 
   const series = [
-    { name: "series1", data: dataClient.map(item => item.price) },
+    { name: "series1", data: dataClient.map(data => data.price) },
+  ];
+  const seriesValues = [
+    { name: "series1", data: dataClient.map(data => data.priceTotal) },
   ];
   const { isOpen } = useSidebarDrawer();
   const isWideVersion = useBreakpointValue({
@@ -96,7 +105,7 @@ export default function Dashboard({ dataClient }: ClientProps) {
             justifyContent="center"
           >
             <Text fontSize="lg" mb="4">
-              Inscritos
+              Valor médio das Ações
             </Text>
             <Chart
               options={options}
@@ -114,11 +123,11 @@ export default function Dashboard({ dataClient }: ClientProps) {
             minW="350"
           >
             <Text fontSize="lg" mb="4">
-              Taxa de abertura
+              Valor investido total
             </Text>
             <Chart
               options={options}
-              series={series}
+              series={seriesValues}
               type="area"
               height={160}
               width={isWideVersion ? 450 : 300}

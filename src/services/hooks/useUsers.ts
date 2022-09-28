@@ -28,6 +28,10 @@ export async function getUsers(page: number): Promise<GetUsersReponse> {
       id: user.id,
       name: user.name,
       email: user.email,
+      price: user.price.toString().replace(".", ","),
+      priceTotal: user.priceTotal.toString().replace(".", ","),
+      quantity: user.quantity,
+      companyShares: user.companyShares[0],
       createdAt: new Date(user.created_at).toLocaleDateString("pt-br", {
         day: "2-digit",
         month: "long",

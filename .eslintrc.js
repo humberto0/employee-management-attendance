@@ -37,6 +37,8 @@ module.exports = {
     "react-perf/jsx-no-new-object-as-prop":"off",
     "react/no-children-prop": "off",
     "indent":"off",
+    "react/no-unknown-property":"off",
+    "react-perf/jsx-no-new-function-as-prop": "off",
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],

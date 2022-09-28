@@ -1,6 +1,11 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { AiOutlineMail, AiFillPayCircle } from "react-icons/ai";
+import { useCallback, useState } from "react";
+import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { AiOutlineMail } from "react-icons/ai";
 import { BiUser, BiPhone } from "react-icons/bi";
+import {
+  MdOutlinePriceChange,
+  MdProductionQuantityLimits,
+} from "react-icons/md";
 import { useMutation } from "react-query";
 
 import {
@@ -27,12 +32,18 @@ import * as yup from "yup";
 
 import { Input } from "../components/Form/Input";
 import { Header } from "../components/Header";
+import { Select } from "../components/Select/SelectForm";
 
 type CreateUserFormData = {
   name: string;
   email: string;
-  password: string;
-  password_confirmation: string;
+  price: string;
+  phone: string;
+  quantity: number;
+  companyShares: string[];
+};
+type Select = {
+  select: { selectCompany: string[] };
 };
 
 const createUserFormSchema = yup.object().shape({
@@ -43,15 +54,18 @@ const createUserFormSchema = yup.object().shape({
     .number()
     .required("Telefone é obrigatório")
     .min(10, "O telefone deve ter no mínimo 10 dígitos"),
+  companyShares: yup.string().required("Nome da Empresa é obrigatório"),
+  quantity: yup.number().required("Quantidade deve ser preenchida"),
 });
 
-export default function CreateUser() {
+export default function CreateUser({ select }: Select) {
+  const [priceValue, setPriceValue] = useState(false);
+  const [quantityShares, setQuantityShares] = useState("0,00");
   const toast = useToast();
   const router = useRouter();
   const bg = useColorModeValue("light", "dark");
   const { isOpen } = useSidebarDrawer();
-
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, setValue, getValues } = useForm({
     resolver: yupResolver(createUserFormSchema),
   });
 
@@ -70,6 +84,25 @@ export default function CreateUser() {
       });
     }
     router.push("/users");
+  };
+
+  const priceAction = useCallback(async event => {
+    setPriceValue(true);
+    setValue("price", "Carregando...");
+    const handleChange = event.target.value;
+    const response = await apiAuth.get(`/select/${handleChange}`);
+    setValue("price", response.data.selectCompany.toFixed(2));
+    setPriceValue(false);
+  }, []);
+
+  const handleQuantity = event => {
+    const handleChange = event.target.value;
+    setQuantityShares(
+      (handleChange * Number(getValues().price.replace(",", ".")))
+        .toFixed(2)
+        .toString()
+        .replace(".", ","),
+    );
   };
 
   return (
@@ -141,23 +174,61 @@ export default function CreateUser() {
                 error={errors.phone}
               />
               <Input
+                {...register("price")}
                 name="price"
                 type="text"
-                label="Preço do plano"
-                {...register("price")}
+                label="Preço da ação"
                 icon={
                   <Icon
-                    as={AiFillPayCircle}
+                    as={MdOutlinePriceChange}
                     color={bg === "light" ? "gray.800" : "gray.100"}
                     mt="2"
                     fontSize="25"
                   />
                 }
+                isDisabled={true}
                 error={errors.price}
               />
             </SimpleGrid>
-          </VStack>
+            <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
+              <Select
+                {...register("companyShares")}
+                focusBorderColor="green.500"
+                bg="transparent"
+                name="companyShares"
+                variant="outline"
+                label="Nome da Empresa"
+                onChange={event => priceAction(event)}
+                error={errors.companyShares}
+              >
+                {select.selectCompany.map((item: string, index: number) => (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
 
+              <Input
+                {...register("quantity")}
+                name="quantity"
+                type="number"
+                label="Quantidade de ações"
+                onChange={handleQuantity}
+                icon={
+                  <Icon
+                    as={MdProductionQuantityLimits}
+                    color={bg === "light" ? "gray.800" : "gray.100"}
+                    mt="2"
+                    fontSize="25"
+                  />
+                }
+                error={errors.quantity}
+              />
+            </SimpleGrid>
+          </VStack>
+          <Flex mt="8" justify="flex-end">
+            <h3>Valor Total: R$ {quantityShares}</h3>
+          </Flex>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
               <Link href="/users" passHref>
@@ -168,9 +239,9 @@ export default function CreateUser() {
               <Button
                 type="submit"
                 colorScheme="green"
-                isLoading={formState.isSubmitting}
+                isLoading={formState.isSubmitting || priceValue}
               >
-                Salvar
+                Comprar
               </Button>
             </HStack>
           </Flex>
@@ -182,10 +253,10 @@ export default function CreateUser() {
 export const getServerSideProps = withSSRAuth(
   async ctx => {
     const apiClient = setupApiClient(ctx);
-    const response = await apiClient.get("/me");
-
+    const response = await apiClient.get("/select");
+    const select: string[] = response.data;
     return {
-      props: {},
+      props: { select },
     };
   },
   {

@@ -41,7 +41,7 @@ export default function UserList() {
     lg: true,
   });
   const { isOpen } = useSidebarDrawer();
-
+  console.log(data);
   const handlePrefetchUser = async (userId: string) => {
     await queryClient.prefetchQuery(
       ["user", userId],
@@ -104,8 +104,10 @@ export default function UserList() {
                       <Checkbox colorScheme="green" />
                     </Th>
                     <Th>Usuário</Th>
-                    {isWideVersion && <Th>Data de cadastro</Th>}
-                    <Th width="8"></Th>
+                    <Th>Empresa</Th>
+                    {isWideVersion && <Th width="8">Valor da Compra/Uni</Th>}
+                    {isWideVersion && <Th width="8">Quantidade das ações</Th>}
+                    <Th width="8">Valor Total</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -130,17 +132,10 @@ export default function UserList() {
                           </Text>
                         </Box>
                       </Td>
-                      {isWideVersion && <Td>{user.createdAt}</Td>}
-                      <Td>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="purple"
-                          leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                          variant="unstyled"
-                        />
-                      </Td>
+                      <Td>{user.companyShares}</Td>
+                      {isWideVersion && <Td>R${user.price}</Td>}
+                      {isWideVersion && <Td>{user.quantity}</Td>}
+                      <Td>R${user.priceTotal}</Td>
                     </Tr>
                   ))}
                 </Tbody>
