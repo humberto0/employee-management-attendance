@@ -160,14 +160,6 @@ export default function SignIn() {
           <Icon as={FcGoogle} color="white" mr="2" fontSize="25" /> Login com a
           conta Google
         </Button>
-        <Flex display="flex" justifyContent="center" alignItems="center">
-          <Text fontSize="xs" textAlign="center">
-            Não tem conta?
-          </Text>
-          <NavLink href="/dashboard" fontSize="xs" colorScheme="gray">
-            Registre-se
-          </NavLink>
-        </Flex>
       </Flex>
     </Flex>
   );

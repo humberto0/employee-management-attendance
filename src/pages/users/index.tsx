@@ -1,6 +1,5 @@
-/* eslint-disable react-perf/jsx-no-new-function-as-prop */
 import { useState } from "react";
-import { RiAddLine, RiPencilLine } from "react-icons/ri";
+import { RiAddLine } from "react-icons/ri";
 
 import {
   Box,
