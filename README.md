@@ -8,6 +8,15 @@ This is an application for managing employee records, tracking their attendance,
 * React Hook Form: A lightweight form library that enables easy form validation and management
 * Yup: A JavaScript schema validation library
 * Mirage.js: A client-side mock API library that allows developers to easily build and test applications without the need for a real backend
+  ![Captura de tela de 2023-04-04 09-51-30](https://user-images.githubusercontent.com/15384670/229810763-ef6aad9b-2cef-4e94-b485-eaa0ae5640fe.png)
+
+  
+  ![Captura de tela de 2023-04-04 09-55-10](https://user-images.githubusercontent.com/15384670/229810877-0712360e-e92b-4a32-a1b9-0b5c611878e1.png)
+  
+  
+
+  ![Captura de tela de 2023-04-04 09-56-27](https://user-images.githubusercontent.com/15384670/229810934-b18d37c8-d266-4408-88be-7770ebe09012.png)
+
 
 ## Installation
 
