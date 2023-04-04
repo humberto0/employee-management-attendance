@@ -94,6 +94,9 @@ To learn more about Next.js, take a look at the following resources:
     "miragejs": "^0.1.45",
     "prettier": "^2.7.1",
     "typescript": "^4.8.
+   },
+   
+ }
 
 ```
 
